@@ -4,10 +4,10 @@ namespace APBD_PJATK_Cw3_s29756.DTOs.Room;
 
 public class CreateRoomDto
 {
-    [Required, MaxLength(100)]
+    [Required, MinLength(1), MaxLength(100)]
     public string Name { get; set; } = string.Empty;
 
-    [Required, MaxLength(10)]
+    [Required, MinLength(1), MaxLength(10)]
     public string BuildingCode { get; set; } = string.Empty;
 
     [Required]

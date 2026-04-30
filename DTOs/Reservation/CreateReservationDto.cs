@@ -3,15 +3,15 @@ using APBD_PJATK_Cw3_s29756.Enums;
 
 namespace APBD_PJATK_Cw3_s29756.DTOs.Reservation;
 
-public class CreateReservationDto
+public class CreateReservationDto : IValidatableObject
 {
     [Required]
     public int RoomId { get; set; }
 
-    [Required, MaxLength(100)]
+    [Required, MinLength(1), MaxLength(100)]
     public string OrganizerName { get; set; } = string.Empty;
 
-    [Required, MaxLength(200)]
+    [Required, MinLength(1), MaxLength(200)]
     public string Topic { get; set; } = string.Empty;
 
     [Required]
@@ -25,4 +25,10 @@ public class CreateReservationDto
 
     [Required]
     public ReservationStatus Status { get; set; }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if (EndTime <= StartTime)
+            yield return new ValidationResult("EndTime must be later than StartTime", [nameof(EndTime)]);
+    }
 }
