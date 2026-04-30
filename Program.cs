@@ -1,23 +1,31 @@
+using APBD_PJATK_Cw3_s29756.Repositories.Reservations;
+using APBD_PJATK_Cw3_s29756.Repositories.Rooms;
+using APBD_PJATK_Cw3_s29756.Services.Reservations;
+using APBD_PJATK_Cw3_s29756.Services.Rooms;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddControllers();
+
+builder.Services.AddSingleton<IRoomRepository, RoomRepository>();
+builder.Services.AddSingleton<IReservationRepository, ReservationRepository>();
+builder.Services.AddTransient<IRoomService, RoomService>();
+builder.Services.AddTransient<IReservationService, ReservationService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    app.UseSwaggerUI(opt =>
+    {
+        opt.SwaggerEndpoint("/openapi/v1.json", "v1");
+    });
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
 app.MapControllers();
+app.UseHttpsRedirection();
 
 app.Run();
